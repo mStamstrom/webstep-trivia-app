@@ -1,24 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import "./App.css";
+import { createQuiz, Quiz } from "./common/requests/quizRequest";
+import { QuizForm } from "./features/quiz-form/QuizForm";
 
 function App() {
+  const [questions, setQuestions] = useState<Quiz[]>([]);
+  const fetchTriviaGame = async (
+    numberOfQuestions: number,
+    difficulty: undefined | string
+  ) => {
+    console.log(numberOfQuestions, difficulty);
+    try {
+      const res = await createQuiz(numberOfQuestions, difficulty);
+      setQuestions(res);
+      console.log(res);
+    } catch {
+      console.error("could not create game");
+    }
+  };
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <QuizForm onSubmit={fetchTriviaGame} />
     </div>
   );
 }
