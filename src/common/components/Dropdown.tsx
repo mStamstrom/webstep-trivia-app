@@ -4,7 +4,7 @@ interface Props extends React.SelectHTMLAttributes<HTMLSelectElement> {
 }
 export const Dropdown = (props: Props) => {
   return (
-    <label>
+    <label className="form-label">
       {props.label}
       <select onChange={props.onChange}>
         {props.options.map((option) => (

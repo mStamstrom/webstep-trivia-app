@@ -4,11 +4,9 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
 
 export const Input = (props: Props) => {
   return (
-    <div>
-      <label>
-        {props.label}
-        <input {...props} />
-      </label>
-    </div>
+    <label className="form-label">
+      {props.label}
+      <input {...props} />
+    </label>
   );
 };

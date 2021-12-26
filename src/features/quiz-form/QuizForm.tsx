@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { Button } from "../../common/components/Button";
 import { Dropdown } from "../../common/components/Dropdown";
 import { Input } from "../../common/components/Input";
+import styles from "./QuizForm.module.css";
 
 const difficulityOptions = ["Any difficulty", "Easy", "Medium", "Hard"];
 
@@ -22,7 +24,7 @@ export const QuizForm = ({ onSubmit }: Props) => {
   return (
     <div>
       <h1>Quiz Form</h1>
-      <form onSubmit={submitForm}>
+      <form onSubmit={submitForm} className={styles.form}>
         <Input
           type="number"
           label="Number of questions"
@@ -33,7 +35,9 @@ export const QuizForm = ({ onSubmit }: Props) => {
           options={difficulityOptions}
           onChange={handleDifficultyChange}
         />
-        <button type="submit">Create quiz</button>
+        <div>
+          <Button type="submit">Create quiz</Button>
+        </div>
       </form>
     </div>
   );
