@@ -1,3 +1,5 @@
+import { Category } from "./categoriesRequest";
+
 export type Quiz = {
   category: string;
   type: string;
@@ -20,11 +22,15 @@ interface ApiQuizResponse {
 }
 export const createQuiz = async (
   amount: number,
-  difficulty: string | undefined
+  difficulty: string | undefined,
+  category: undefined | Category
 ) => {
   let url = `https://opentdb.com/api.php?amount=${amount}`;
   if (difficulty) {
     url += `&difficulty=${difficulty.toLocaleLowerCase()}`;
+  }
+  if (category) {
+    url += `&category=${category.id}`;
   }
   const response = await fetch(url);
   const responseJson: ApiQuizResponse = await response.json();
