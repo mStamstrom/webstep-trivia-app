@@ -32,6 +32,12 @@ const shuffleArray = (currentQuestions: Answer[]) => {
     .map(({ value }) => value);
 };
 
+function decodeEntities(encodedString: string): string {
+  const textArea = document.createElement("textarea");
+  textArea.innerHTML = encodedString;
+  return textArea.value;
+}
+
 export const createQuiz = async (
   amount: number,
   difficulty: string | undefined,
@@ -51,16 +57,17 @@ export const createQuiz = async (
   }
   const mapResults: Question[] = responseJson.results.map((result) => {
     const answers = result.incorrect_answers.map((answer) => ({
-      answer,
+      answer: decodeEntities(answer),
       isCorrectAnswer: false,
     }));
     answers.push({
       isCorrectAnswer: true,
-      answer: result.correct_answer,
+      answer: decodeEntities(result.correct_answer),
     });
     return {
-      answers: shuffleArray(answers),
       ...result,
+      answers: shuffleArray(answers),
+      question: decodeEntities(result.question),
     };
   });
   return Promise.resolve(mapResults);
