@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Button } from "../../common/components/Button";
 import { Answer, Question } from "../../common/requests/quizRequest";
 import { QuestionDisplay } from "./QuestionDisplay";
 interface Props {
@@ -32,6 +33,10 @@ export const QuizPage = (props: Props) => {
     ]);
   };
 
+  const changeQuestion = () => {
+    setCurrentQuestionIndex(currentQuestionIndex + 1);
+  };
+
   return (
     <div>
       <div>
@@ -47,6 +52,7 @@ export const QuizPage = (props: Props) => {
         userAnswer={currentUserAnswer?.answer}
         onAnswer={onAnswer}
       />
+      <Button onClick={changeQuestion}>Next question</Button>
     </div>
   );
 };
