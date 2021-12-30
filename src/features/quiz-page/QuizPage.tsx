@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "../../common/components/Button";
 import { Answer, Question } from "../../common/requests/quizRequest";
+import { QuizCompletedPage } from "../quiz-completed/QuizCompletedPage";
 import { QuestionDisplay } from "./QuestionDisplay";
 interface Props {
   questions: Question[];
@@ -36,6 +37,10 @@ export const QuizPage = (props: Props) => {
   const changeQuestion = () => {
     setCurrentQuestionIndex(currentQuestionIndex + 1);
   };
+
+  if (currentQuestionIndex >= props.questions.length) {
+    return <QuizCompletedPage points={points} questions={props.questions} />;
+  }
 
   return (
     <div>
