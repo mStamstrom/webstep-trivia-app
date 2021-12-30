@@ -3,6 +3,7 @@ import { Category } from "./categoriesRequest";
 export type Answer = {
   isCorrectAnswer: boolean;
   answer: string;
+  index: number;
 };
 
 export type Question = {
@@ -29,7 +30,7 @@ const shuffleArray = (currentQuestions: Answer[]) => {
   return currentQuestions
     .map((value) => ({ value, sort: Math.random() }))
     .sort((a, b) => a.sort - b.sort)
-    .map(({ value }) => value);
+    .map(({ value }, index) => ({ ...value, index }));
 };
 
 function decodeEntities(encodedString: string): string {
@@ -56,13 +57,15 @@ export const createQuiz = async (
     throw new Error("Invalid request");
   }
   const mapResults: Question[] = responseJson.results.map((result) => {
-    const answers = result.incorrect_answers.map((answer) => ({
+    const answers = result.incorrect_answers.map((answer, index) => ({
       answer: decodeEntities(answer),
       isCorrectAnswer: false,
+      index,
     }));
     answers.push({
       isCorrectAnswer: true,
       answer: decodeEntities(result.correct_answer),
+      index: answers.length,
     });
     return {
       ...result,

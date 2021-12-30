@@ -22,11 +22,9 @@ export const QuestionDisplay = ({ question, userAnswer, onAnswer }: Props) => {
               userAnswer && answer.isCorrectAnswer && styles.correctAnswer,
               userAnswer &&
                 !userAnswer.isCorrectAnswer &&
-                userAnswer.answer === answer.answer &&
+                userAnswer.index === index &&
                 styles.wrongAnswer,
-              userAnswer &&
-                userAnswer.answer === answer.answer &&
-                styles.selectedAnswer,
+              userAnswer && userAnswer.index === index && styles.selectedAnswer,
             ])}
           >
             <div className={styles.index}>{index + 1}</div>
