@@ -1,12 +1,16 @@
 import { Category } from "./categoriesRequest";
 
-export type Quiz = {
+export type Answer = {
+  isCorrectAnswer: boolean;
+  answer: string;
+};
+
+export type Question = {
   category: string;
   type: string;
   difficulty: string;
   question: string;
-  correctAnswer: string;
-  incorrectAnswers: string[];
+  answers: Answer[];
 };
 
 interface ApiQuizResponse {
@@ -20,6 +24,14 @@ interface ApiQuizResponse {
     incorrect_answers: string[];
   }>;
 }
+
+const shuffleArray = (currentQuestions: Answer[]) => {
+  return currentQuestions
+    .map((value) => ({ value, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ value }) => value);
+};
+
 export const createQuiz = async (
   amount: number,
   difficulty: string | undefined,
@@ -37,10 +49,19 @@ export const createQuiz = async (
   if (responseJson.responseCode > 0) {
     throw new Error("Invalid request");
   }
-  const mapResults: Quiz[] = responseJson.results.map((result) => ({
-    correctAnswer: result.correct_answer,
-    incorrectAnswers: result.incorrect_answers,
-    ...result,
-  }));
+  const mapResults: Question[] = responseJson.results.map((result) => {
+    const answers = result.incorrect_answers.map((answer) => ({
+      answer,
+      isCorrectAnswer: false,
+    }));
+    answers.push({
+      isCorrectAnswer: true,
+      answer: result.correct_answer,
+    });
+    return {
+      answers: shuffleArray(answers),
+      ...result,
+    };
+  });
   return Promise.resolve(mapResults);
 };

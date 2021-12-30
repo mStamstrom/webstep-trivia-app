@@ -1,11 +1,12 @@
 import { useState } from "react";
 import "./App.css";
 import { Category } from "./common/requests/categoriesRequest";
-import { createQuiz, Quiz } from "./common/requests/quizRequest";
+import { createQuiz, Question } from "./common/requests/quizRequest";
 import { QuizForm } from "./features/quiz-form/QuizForm";
+import { QuizPage } from "./features/quiz-page/QuizPage";
 
 function App() {
-  const [questions, setQuestions] = useState<Quiz[]>([]);
+  const [questions, setQuestions] = useState<Question[]>([]);
   const fetchTriviaGame = async (
     numberOfQuestions: number,
     difficulty: undefined | string,
@@ -22,7 +23,11 @@ function App() {
   };
   return (
     <div className="App">
-      <QuizForm onSubmit={fetchTriviaGame} />
+      {questions.length > 0 ? (
+        <QuizPage questions={questions} />
+      ) : (
+        <QuizForm onSubmit={fetchTriviaGame} />
+      )}
     </div>
   );
 }
