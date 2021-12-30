@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Question } from "../../common/requests/quizRequest";
-
+import { QuestionDisplay } from "./QuestionDisplay";
 interface Props {
   questions: Question[];
 }
@@ -12,10 +12,7 @@ export const QuizPage = (props: Props) => {
 
   return (
     <div>
-      {currentQuestion.question}
-      {currentQuestion.answers.map((answer) => (
-        <button>{answer.answer}</button>
-      ))}
+      <QuestionDisplay question={currentQuestion} />
     </div>
   );
 };
