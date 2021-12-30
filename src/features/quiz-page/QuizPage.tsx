@@ -14,6 +14,10 @@ export const QuizPage = (props: Props) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<UserAnswer[]>([]);
 
+  const points = answers.filter(
+    (answer) => answer.answer.isCorrectAnswer
+  ).length;
+
   const currentQuestion = props.questions[currentQuestionIndex];
   const currentUserAnswer: UserAnswer | undefined =
     answers[currentQuestionIndex];
@@ -31,8 +35,12 @@ export const QuizPage = (props: Props) => {
   return (
     <div>
       <div>
-        user has answered:{" "}
-        {currentUserAnswer ? currentUserAnswer.answer.answer : "No answer yet!"}
+        <span>
+          Points: {points} / {props.questions.length}
+        </span>
+        <span style={{ marginLeft: "100px" }}>
+          Question: {currentQuestionIndex + 1} / {props.questions.length}
+        </span>
       </div>
       <QuestionDisplay
         question={currentQuestion}
