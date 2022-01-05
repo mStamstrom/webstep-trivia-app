@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/webstep-trivia-app/static/css/main.f9721776.css",
+    "main.js": "/webstep-trivia-app/static/js/main.c9f81dc3.js",
+    "static/js/787.c50a8ca8.chunk.js": "/webstep-trivia-app/static/js/787.c50a8ca8.chunk.js",
+    "index.html": "/webstep-trivia-app/index.html",
+    "main.f9721776.css.map": "/webstep-trivia-app/static/css/main.f9721776.css.map",
+    "main.c9f81dc3.js.map": "/webstep-trivia-app/static/js/main.c9f81dc3.js.map",
+    "787.c50a8ca8.chunk.js.map": "/webstep-trivia-app/static/js/787.c50a8ca8.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f9721776.css",
+    "static/js/main.c9f81dc3.js"
+  ]
+}
