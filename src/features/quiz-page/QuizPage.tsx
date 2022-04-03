@@ -1,26 +1,28 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "../../common/components/Button";
+import { useQuizContext } from "../../common/contexts/QuizContext";
 import { Answer, Question } from "../../common/requests/quizRequest";
 import { QuizCompletedPage } from "../quiz-completed/QuizCompletedPage";
 import { QuestionDisplay } from "./QuestionDisplay";
-interface Props {
-  questions: Question[];
-}
+import styles from "./QuizPage.module.css";
 
 interface UserAnswer {
   question: string;
   answer: Answer;
 }
 
-export const QuizPage = (props: Props) => {
+export const QuizPage = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<UserAnswer[]>([]);
+  const { questions } = useQuizContext();
+  const navigate = useNavigate();
 
   const points = answers.filter(
     (answer) => answer.answer.isCorrectAnswer
   ).length;
 
-  const currentQuestion = props.questions[currentQuestionIndex];
+  const currentQuestion = questions[currentQuestionIndex];
   const currentUserAnswer: UserAnswer | undefined =
     answers[currentQuestionIndex];
 
@@ -35,21 +37,22 @@ export const QuizPage = (props: Props) => {
   };
 
   const changeQuestion = () => {
-    setCurrentQuestionIndex(currentQuestionIndex + 1);
+    const nextQuestionIndex = currentQuestionIndex + 1;
+    if (nextQuestionIndex >= questions.length) {
+      navigate("/webstep-trivia-app/quiz-completed");
+    } else {
+      setCurrentQuestionIndex(nextQuestionIndex);
+    }
   };
-
-  if (currentQuestionIndex >= props.questions.length) {
-    return <QuizCompletedPage points={points} questions={props.questions} />;
-  }
 
   return (
     <div>
       <div>
         <span>
-          Points: {points} / {props.questions.length}
+          Points: {points} / {questions.length}
         </span>
-        <span style={{ marginLeft: "100px" }}>
-          Question: {currentQuestionIndex + 1} / {props.questions.length}
+        <span className={styles.question}>
+          Question: {currentQuestionIndex + 1} / {questions.length}
         </span>
       </div>
       <QuestionDisplay

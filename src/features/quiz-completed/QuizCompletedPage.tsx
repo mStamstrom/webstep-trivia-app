@@ -1,12 +1,9 @@
 import { Button } from "../../common/components/Button";
 import { Question } from "../../common/requests/quizRequest";
 
-interface Props {
-  points: number;
-  questions: Question[];
-}
-
-export const QuizCompletedPage = ({ points, questions }: Props) => {
+export const QuizCompletedPage = () => {
+  const points = 10,
+    questions = [];
   return (
     <div>
       <h1>You finished the quiz!</h1>

@@ -2,26 +2,25 @@ import { useEffect, useState } from "react";
 import { Button } from "../../common/components/Button";
 import { Dropdown } from "../../common/components/Dropdown";
 import { Input } from "../../common/components/Input";
+import { useQuizContext } from "../../common/contexts/QuizContext";
 import {
   Category,
   fetchCategories,
 } from "../../common/requests/categoriesRequest";
+import { createQuiz } from "../../common/requests/quizRequest";
 import styles from "./QuizForm.module.css";
+import { useNavigate } from "react-router-dom";
 
 const difficulityOptions = ["Any difficulty", "Easy", "Medium", "Hard"];
 
-interface Props {
-  onSubmit: (
-    numberOfQuestions: number,
-    difficulty: string | undefined,
-    selectedCategory: undefined | Category
-  ) => void;
-}
-export const QuizForm = ({ onSubmit }: Props) => {
+export const QuizForm = () => {
   const [numberOfQuestion, setNumberOfQuestions] = useState(0);
   const [difficulity, setDifficulty] = useState<undefined | string>(undefined);
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<Category>();
+  const navigate = useNavigate();
+
+  const { setQuestions } = useQuizContext();
 
   useEffect(() => {
     let isCancelled = false;
@@ -35,6 +34,22 @@ export const QuizForm = ({ onSubmit }: Props) => {
       isCancelled = true;
     };
   }, []);
+
+  const fetchTriviaGame = async (
+    numberOfQuestions: number,
+    difficulty: undefined | string,
+    category: undefined | Category
+  ) => {
+    console.log(numberOfQuestions, difficulty);
+    try {
+      const res = await createQuiz(numberOfQuestions, difficulty, category);
+      setQuestions(res);
+      navigate("/webstep-trivia-app/quiz");
+      console.log(res);
+    } catch {
+      console.error("could not create game");
+    }
+  };
 
   const handleDifficultyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setDifficulty(e.target.value);
@@ -50,7 +65,7 @@ export const QuizForm = ({ onSubmit }: Props) => {
 
   const submitForm = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(numberOfQuestion, difficulity, selectedCategory);
+    fetchTriviaGame(numberOfQuestion, difficulity, selectedCategory);
   };
   return (
     <div>
